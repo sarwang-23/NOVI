@@ -14,6 +14,11 @@ from app.modules.achievements.router import router as achievements_router
 from app.modules.projects.router import router as projects_router
 from app.modules.certificates.router import router as certificates_router
 from app.modules.milestones.router import router as milestone_router
+from app.modules.skills.router import router as skills_router
+from app.modules.careers.router import router as careers_router
+from app.modules.universities.router import router as universities_router
+from app.modules.opportunities.router import router as opportunities_router
+from app.modules.applications.router import router as applications_router
 
 from app.modules.checkins.router import router as checkins_router
 from app.modules.notifications.router import router as notifications_router
@@ -69,6 +74,11 @@ app.include_router(achievements_router)
 app.include_router(projects_router)
 app.include_router(certificates_router)
 app.include_router(milestone_router)
+app.include_router(skills_router)
+app.include_router(careers_router)
+app.include_router(universities_router)
+app.include_router(opportunities_router)
+app.include_router(applications_router)
 app.include_router(checkins_router)
 app.include_router(notifications_router)
 app.include_router(novi_router)

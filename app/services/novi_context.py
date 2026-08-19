@@ -17,7 +17,7 @@ class NoviContextService:
         # 1. Student Basic
         student_data = {
             "id": student.id,
-            "current_grade": student.current_grade,
+            "current_grade": student.grade,
             "curriculum": student.curriculum
         }
 
