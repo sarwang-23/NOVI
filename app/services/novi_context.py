@@ -26,7 +26,7 @@ class NoviContextService:
         goals_data = [{"id": g.id, "title": g.title, "goal_type": g.goal_type, "status": g.status} for g in goals]
 
         # 3. Roadmap
-        roadmap = db.query(Roadmap).filter(Roadmap.student_id == student.id, Roadmap.is_active == True).first()
+        roadmap = db.query(Roadmap).filter(Roadmap.student_id == student.id, Roadmap.status == "active").first()
         roadmap_data = None
         if roadmap:
             milestones = db.query(Milestone).filter(Milestone.roadmap_id == roadmap.id).all()

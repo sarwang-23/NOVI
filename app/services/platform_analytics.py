@@ -35,7 +35,7 @@ class PlatformAnalyticsService:
         completed_goals = goal_query.filter(Goal.status == "completed").count()
         
         total_roadmaps = roadmap_query.count()
-        active_roadmaps = roadmap_query.filter(Roadmap.is_active == True).count()
+        active_roadmaps = roadmap_query.filter(Roadmap.status == "active").count()
         
         return {
             "students": {

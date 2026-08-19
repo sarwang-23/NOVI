@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
+from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -33,7 +34,6 @@ from app.modules.admin.analytics_router import router as admin_analytics_router
 from app.modules.admin.audit_router import router as admin_audit_router
 from app.modules.organizations.router import router as organizations_router
 
-# Phase 131-140 Routers
 from app.modules.organizations.settings_router import router as org_settings_router
 from app.modules.onboarding.router import router as onboarding_router
 from app.modules.counselor.router import router as counselor_router
@@ -44,15 +44,25 @@ from app.modules.reports.router import router as reports_router
 from app.modules.approvals.router import router as approvals_router
 from app.modules.subscription.router import router as subscription_router
 
-# Phase 141-150 Routers
 from app.modules.integrations.router import router as integrations_router
+
+from app.utils.exceptions import (
+    AppException,
+    app_exception_handler,
+    general_exception_handler,
+)
 
 app = FastAPI(
     title="Novi Backend API",
     description="API for Novi Student Platform",
-    version="1.0.0"
+    version="1.0.0",
 )
 
+# --- Exception Handlers ---
+app.add_exception_handler(AppException, app_exception_handler)
+app.add_exception_handler(Exception, general_exception_handler)
+
+# --- Middleware ---
 from app.middleware.enterprise import EnterpriseMiddleware
 
 app.add_middleware(EnterpriseMiddleware)
@@ -64,6 +74,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- Routers ---
 app.include_router(student_router)
 app.include_router(auth_router)
 app.include_router(goals_router)
@@ -91,7 +102,6 @@ app.include_router(admin_analytics_router)
 app.include_router(admin_audit_router)
 app.include_router(organizations_router)
 
-# Enterprise Phase Routers (131-140)
 app.include_router(onboarding_router)
 app.include_router(org_settings_router)
 app.include_router(counselor_router)
@@ -102,21 +112,22 @@ app.include_router(reports_router)
 app.include_router(approvals_router)
 app.include_router(subscription_router)
 
-# Integrations Phase Routers (141-150)
 app.include_router(integrations_router)
+
+
+# --- Health Endpoints ---
 
 @app.get("/health")
 def health_check():
     return {
         "success": True,
-        "message": "Novi Backend is running"
+        "message": "Novi Backend is running",
     }
+
 
 @app.get("/api/v1/auth/me")
 def me(user=Depends(auth0.get_user)):
     return user
-
-
 
 
 @app.get("/health/database")
@@ -124,8 +135,7 @@ def database_health():
     with engine.connect() as connection:
         connection.execute(text("SELECT 1"))
 
-
     return {
         "success": True,
-        "message": "Novi Database is connected"
+        "message": "Novi Database is connected",
     }

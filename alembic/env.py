@@ -53,6 +53,8 @@ from app.models.skill import Skill, StudentSkill
 from app.models.opportunity import Opportunity, StudentOpportunity
 from app.models.application import Application, ApplicationRequirement
 from app.models.student_outcome import StudentOutcome
+from app.models.career_category import CareerCategory
+from app.models.career_skill import CareerSkill, CareerSubject
 from app.core.config import settings
 
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL.replace("%", "%%"))
